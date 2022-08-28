@@ -11,7 +11,7 @@
 * Model > DecisionTree > DecisionNodeWeighted.py
 * Test > Classifier > AdaBoostTest.py
 
-##Updated classes:
+## Updated classes:
 * InstanceList > InstanceList.py
 * Added functions:
 * attributeClassDistributionWeighted
