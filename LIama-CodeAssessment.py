@@ -86,7 +86,7 @@ def create_assessment_prompt(student_code, ref_codes):
         "You can also use abstract syntax trees, control flow graphs, and data flow graphs of each segment to make assessments properly. "
         "Your main goal is to assess the code like an instructor and grade it even if it is not correct totally. "
         "Follow the steps below.\n\n"
-        "Step 1 - Perform an assessment for the entire code at once and create only one grade by comparing the answer code to the reference code.\n"
+        "Step 1 - Perform an assessment for the entire code at once and create only one grade by comparing the answer code to the grade of the reference code.\n"
         "Step 2 - Assess and grade the codes by using dynamic and static code assessment methods.\n"
         "Step 3 - Support your assessment by comparing codes using their graph models; abstract syntax trees, control flow graphs, and data flow graphs.\n"
         "Step 4 - Grades should be integer and not bigger than the reference code's segment grade.\n\n"
@@ -143,14 +143,14 @@ if __name__ == "__main__":
         print("Folder does not exist!")
     else:
         
-        # Split code file into segments data\Midterm2-Annotated (1)\Q1
+        # Split code file into segments data\Midterm1-Annotated\Q1
         process_code_files(folder_path)
         
         # Stop = input("Continue!")
         
         for root, dirs, files in os.walk(folder_path):
             for dir_name in dirs:
-                if "segment" in dir_name.lower():  # Check if the folder name includes "segment"
+                if "segment" in dir_name.lower(): 
                     print(datetime.now().strftime("%Y%m%d_%H%M%S"))
                     segment_folder_path = os.path.join(root, dir_name)
                     print(f"Assessing folder: {segment_folder_path}")
@@ -158,13 +158,15 @@ if __name__ == "__main__":
                     print(datetime.now().strftime("%Y%m%d_%H%M%S"))
                     print(results)
                 
-                    # Process the results for CSV output
-                    processed_data = [result.split() for filename, result in results]
+                    # Prepare the results for CSV output
+                    processed_data = [(filename, result) for filename, result in results]
+
                     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-                    filename = os.path.join(segment_folder_path, f"assessment_{timestamp}.csv")
-                
-                    with open(filename, mode='w', newline='') as file:
+                    csv_filename = os.path.join(folder_path, f"assessment_{timestamp}.csv")
+
+                    with open(csv_filename, mode='w', newline='') as file:
                         writer = csv.writer(file)
+                        writer.writerow(["Filename", "Grade"])  
                         writer.writerows(processed_data)
-                
-                    print(f"Data has been written to {filename}")
+
+                    print(f"Data has been written to {csv_filename}")
